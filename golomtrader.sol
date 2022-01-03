@@ -1,3 +1,6 @@
+/**
+ *Submitted for verification at Etherscan.io on 2021-12-26
+*/
 
 pragma solidity 0.6.0;
 
@@ -24,7 +27,7 @@ contract Golomtrader {
         public
   {
     owner = payable(msg.sender);
-    address WETH = 0xd0A1E359811322d97991E03f863a0C30C2cF029C;
+    address WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     wethcontract = ERC20(WETH);
   }
 
@@ -209,6 +212,3 @@ contract Golomtrader {
       emit Ordercancelled(hashStruct);
   }
 }
-
-
-
