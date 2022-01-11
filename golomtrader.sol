@@ -230,7 +230,7 @@ contract GollumTrader {
     // the hash here doesnt take tokenid so allows seller to fill the offer with any token id of the collection (floor buyer)
     bytes32 hashStruct = keccak256(
       abi.encode(
-          keccak256("matchofferany(address contractaddress,uint ethamt,uint deadline,uint feeamt,address signer,uint salt,address royaltyaddress,uint royaltyamt)"),
+          keccak256("matchoffer(address contractaddress,uint ethamt,uint deadline,uint feeamt,address signer,uint salt,address royaltyaddress,uint royaltyamt)"),
           _addressArgs[0],
           _uintArgs[1],
           _uintArgs[2],
