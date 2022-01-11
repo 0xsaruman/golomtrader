@@ -18,7 +18,7 @@ contract GollumTrader {
   address payable owner;
   ERC20 wethcontract;
   event Orderfilled(address indexed from,address indexed to, bytes32 indexed id, uint ethamt,address refferer,uint feeamt,uint royaltyamt,address royaltyaddress);
-  event Offerfilled(address indexed from,address indexed to, bytes32 indexed id, uint ethamt,uint feeamt,uint royaltyamt,address royaltyaddress);
+  event Offerfilled(address indexed from,address indexed to, bytes32 indexed id, uint ethamt,uint feeamt,uint royaltyamt,address royaltyaddress,uint isany);
   event Ordercancelled(bytes32 indexed id);
   event Offercancelled(bytes32 indexed id);
 
@@ -26,7 +26,7 @@ contract GollumTrader {
         public
   {
     owner = payable(msg.sender);
-    address WETH = 0xd0A1E359811322d97991E03f863a0C30C2cF029C;
+    address WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     wethcontract = ERC20(WETH);
   }
 
@@ -39,7 +39,7 @@ contract GollumTrader {
             ),
             keccak256(bytes("GOLLUM.XYZ")),
             keccak256(bytes("1")),
-            42,
+            1,
             address(this)
         )
     );  
@@ -175,12 +175,12 @@ contract GollumTrader {
       require(wethcontract.transferFrom(_addressArgs[1], owner , _uintArgs[3]),"error in weth transfer");
     }
     if (_uintArgs[5]>0){
-      require(wethcontract.transferFrom(_addressArgs[2], owner , _uintArgs[5]),"error in weth transfer");
+      require(wethcontract.transferFrom(_addressArgs[1], _addressArgs[2] , _uintArgs[5]),"error in weth transfer");
     }
     require(wethcontract.transferFrom(_addressArgs[1], msg.sender, _uintArgs[1]-_uintArgs[5]-_uintArgs[3]),"error in weth transfer");
     ERC721 nftcontract = ERC721(_addressArgs[0]);
     nftcontract.safeTransferFrom(msg.sender,_addressArgs[1] ,_uintArgs[0]);
-    emit Offerfilled(_addressArgs[1], msg.sender, hashStruct , _uintArgs[1] ,_uintArgs[3],_uintArgs[5],_addressArgs[2]);
+    emit Offerfilled(_addressArgs[1], msg.sender, hashStruct , _uintArgs[1] ,_uintArgs[3],_uintArgs[5],_addressArgs[2],0);
   }
 
 
@@ -252,12 +252,12 @@ contract GollumTrader {
       require(wethcontract.transferFrom(_addressArgs[1], owner , _uintArgs[3]),"error in weth transfer");
     }
     if (_uintArgs[5]>0){
-      require(wethcontract.transferFrom(_addressArgs[2], owner , _uintArgs[5]),"error in weth transfer");
+      require(wethcontract.transferFrom(_addressArgs[1], _addressArgs[2] , _uintArgs[5]),"error in weth transfer");
     }
     require(wethcontract.transferFrom(_addressArgs[1], msg.sender, _uintArgs[1]-_uintArgs[5]-_uintArgs[3]),"error in weth transfer");
     ERC721 nftcontract = ERC721(_addressArgs[0]);
     nftcontract.safeTransferFrom(msg.sender,_addressArgs[1] ,_uintArgs[0]);
-    emit Offerfilled(_addressArgs[1], msg.sender, hashStruct , _uintArgs[1] ,_uintArgs[3],_uintArgs[5],_addressArgs[2]);
+    emit Offerfilled(_addressArgs[1], msg.sender, hashStruct , _uintArgs[1] ,_uintArgs[3],_uintArgs[5],_addressArgs[2],1);
   }
 
 
@@ -360,7 +360,7 @@ contract GollumTrader {
 /// @dev addressargs->//0 - contractaddress,//1 - signer,//2 - royaltyaddress,//3 - reffereraddress
 /// @dev uintArgs->//0-tokenid ,//1-ethamt,//2-deadline,//3-feeamt,//4-salt,//5-royaltyamt
 
-  function OrderStatus(
+  function orderStatus(
     uint8 v,
     bytes32 r,
     bytes32 s,
@@ -407,7 +407,7 @@ contract GollumTrader {
 // VALID - 3
 /// @notice returns status of an order
 
-  function OfferStatus(
+  function offerStatus(
     uint8 v,
     bytes32 r,
     bytes32 s,
