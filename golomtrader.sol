@@ -123,7 +123,7 @@ contract GolomTrader {
           _uintArgs[3],
           _uintArgs[5],
           _addressArgs[2],
-          _addressArgs[1],
+          msg.sender,
           _addressArgs[4],
           _uintArgs[2],
           _uintArgs[4]
@@ -215,7 +215,7 @@ contract GolomTrader {
             _addressArgs[0],
             _uintArgs[1],
             _uintArgs[3],
-            _addressArgs[1],
+            msg.sender,
             _uintArgs[2],
             _uintArgs[4]
             )
